@@ -59,8 +59,8 @@ class UserController extends Controller
             } else {
                 $cityID = $request->city;
             }
-            dd($cityID);
-            CityManager::create([
+            
+            CityManager::insert([
                 'user_id' => $user->id,
                 'city_id' => $cityID,
                 // 'role' => 'city_manager',
