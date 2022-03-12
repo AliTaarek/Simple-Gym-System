@@ -59,6 +59,7 @@ class UserController extends Controller
             } else {
                 $cityID = $request->city;
             }
+            dd($cityID);
             CityManager::create([
                 'user_id' => $user->id,
                 'city_id' => $cityID,
