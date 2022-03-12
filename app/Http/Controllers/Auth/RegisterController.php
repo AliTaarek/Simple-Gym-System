@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\GymMember;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -50,9 +52,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'profile_image' => ['image', 'mimes:jpg,png'],
+            'gender' => ['required'],
+            'date_of_birth' => ['required'],
         ]);
     }
 
@@ -64,10 +69,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $request = request();
+        if ($request->hasFile('profile_image')) {
+            $img = $request->file('profile_image');
+            $name = 'img-' . uniqid() . '.' . $img->getClientOriginalExtension();
+            $img->move(public_path('images/users'), $name);
+        }
+        
+        $user = User::create([
+            'name' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'avatar_image' => $name,
         ]);
+
+        $gymMember = GymMember::create([
+            'user_id' => $user->id,
+            'gender' => $data['gender'],
+            'date_of_birth' => $data['date_of_birth'],
+        ]);
+
+        return $user;
     }
 }
