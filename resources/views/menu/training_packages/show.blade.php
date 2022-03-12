@@ -26,7 +26,7 @@
                         <div class="col-sm-4 border-right">
                             <div class="description-block">
                                 <h5 class="description-header">Price</h5>
-                                <span class="description-text">{{$package->price}}</span>
+                                <span class="description-text">{{$package->price / 100}}</span>
                             </div>
 
                         </div>
