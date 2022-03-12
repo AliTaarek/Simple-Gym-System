@@ -6,6 +6,10 @@ A Simple Gym System as the Laravel project for Open Source Application Developme
 ```
 http://still-coast-73893.herokuapp.com/login
 ```
+```
+Admin Email: abdo@gmail.com
+
+```
 
 # Contents
 - [ERD]()
